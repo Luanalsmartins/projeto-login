@@ -4,17 +4,23 @@ const emailInput = document.querySelector('#ilogin')
 const passwordInput = document.querySelector('#isenha')
 const reqComprimento = document.querySelector('#req-comprimento')
 const reqForca = document.querySelector('#req-forca')
+const btnOlho = document.querySelector('#olho')
 
 // 2. Funções Auxiliares (Helpers)
 const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 
 function showError(input, message) {
     const campo = input.parentElement
-    const error = campo.querySelector('.error-message') || campo.querySelector('.error')
+    const error = campo.querySelector('.error-message')
     if (error) {
         error.innerText = message
-        campo.classList.add('error')
+
         campo.classList.remove('success')
+        campo.classList.add('error')
+
+        input.classList.remove('input-shake')
+        void input.offsetWidth
+        input.classList.add('input-shake')
     }
 }
 
@@ -72,6 +78,16 @@ function handlePasswordRealTime() {
     if (temLetrasNum) reqForca.classList.replace('invalid', 'valid')
     else reqForca.classList.replace('valid', 'invalid')
 }
+
+btnOlho.addEventListener('click', () => {
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text' // mostra a senha
+        btnOlho.innerText = 'visibility_off' 
+    } else {
+        passwordInput.type = 'password' // esconde a senha
+        btnOlho.innerText = 'visibility'
+    }
+})
 
 // 4. Escutadores de eventos
 passwordInput.addEventListener('input', handlePasswordRealTime)

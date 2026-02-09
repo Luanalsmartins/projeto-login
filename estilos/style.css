@@ -61,8 +61,12 @@ p {
     border-radius: 8px;
     margin-bottom: 30px;
 }
+.campo.success {
+    border-color: var(--sucesso);
+}
 .campo-senha {
     margin-bottom: 60px;
+    position: relative;
 }
 .campo:hover {
     background-color: lightgrey;
@@ -85,9 +89,20 @@ p {
     border-radius: 0px 6px 6px 0px;
     padding-left: 8px;
     outline: none;
+    display: block;
 }
 .campo > input:focus-within {
     background-color: #b3acb8;
+}
+#olho {
+    position: absolute;
+    right: 10px;
+    color: var(--roxo);
+    cursor: pointer;
+    user-select: none;
+}
+#olho:hover {
+    color: black;
 }
 /*Validações*/
 .error-message {
@@ -147,4 +162,15 @@ input[type=submit]:hover {
     color: white;
     font-weight: 500;
     cursor: pointer;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-10px); }
+    40%, 80% { transform: translateX(10px); }
+}
+
+.input-shake {
+    animation: shake 0.4s cubic-bezier(.36,.07,.19,.97);
+    border-color: var(--erro);
 }
