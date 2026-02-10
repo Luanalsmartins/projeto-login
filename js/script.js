@@ -1,3 +1,4 @@
+let tentouEnviar = false
 // 1. Seleção de elementos (DOM)
 const form = document.querySelector('#login-form')
 const emailInput = document.querySelector('#ilogin')
@@ -14,14 +15,13 @@ function showError(input, message) {
     const error = campo.querySelector('.error-message')
     if (error) {
         error.innerText = message
-
-        campo.classList.remove('success')
-        campo.classList.add('error')
-
-        input.classList.remove('input-shake')
-        void input.offsetWidth
-        input.classList.add('input-shake')
     }
+    campo.classList.remove('success')
+    campo.classList.add('error')
+
+    campo.classList.remove('campo-shake')
+    void campo.offsetWidth
+    campo.classList.add('campo-shake')
 }
 
 function showSuccess(input) {
@@ -49,6 +49,22 @@ function validarEmail() {
     }
 }
 
+function handleEmailRealTime() {
+    const emailValue = emailInput.value.trim()
+    const campo = emailInput.parentElement
+    const error = campo.querySelector('.error-message')
+
+    if (emailValue === '') {
+        emailInput.parentElement.classList.remove('error', 'success')
+        emailInput.parentElement.querySelector('.error-message').innerText = ''
+        return
+    }
+
+    if (isValidEmail(emailValue)) {
+        showSuccess(emailInput)
+    }
+}
+
 function validarSenhaFinal() {
     const passwordValue = passwordInput.value.trim()
     const temOito = passwordValue.length >= 8
@@ -68,15 +84,32 @@ function validarSenhaFinal() {
 
 function handlePasswordRealTime() {
     const senha = passwordInput.value 
+    const campo = passwordInput.parentElement
+
     const temOito = senha.length >= 8
-    // CORRIGIDO: era passwordValue, agora é senha
     const temLetrasNum = /[a-zA-Z]/.test(senha) && /[0-9]/.test(senha) 
+
+    const requisitos = document.querySelector('.requisitos-senha')
 
     if (temOito) reqComprimento.classList.replace('invalid', 'valid')
     else reqComprimento.classList.replace('valid', 'invalid')
 
     if (temLetrasNum) reqForca.classList.replace('invalid', 'valid')
     else reqForca.classList.replace('valid', 'invalid')
+
+    if (temOito && temLetrasNum) {
+        campo.classList.remove('error', 'campo-shake')
+        campo.classList.add('success')
+    } else {
+        campo.classList.remove('success')
+        if (!tentouEnviar) campo.classList.remove('error')
+    }
+
+    if (temOito && temLetrasNum) {
+        requisitos.classList.remove('ativo')
+    } else {
+        requisitos.classList.add('ativo')
+    }
 }
 
 btnOlho.addEventListener('click', () => {
@@ -90,21 +123,38 @@ btnOlho.addEventListener('click', () => {
 })
 
 // 4. Escutadores de eventos
+emailInput.addEventListener('input', handleEmailRealTime)
 passwordInput.addEventListener('input', handlePasswordRealTime)
+
 emailInput.addEventListener('blur', validarEmail)
 passwordInput.addEventListener('blur', validarSenhaFinal)
 
-form.addEventListener('submit', (event) => {
-    event.preventDefault()
+form.addEventListener('submit', function (e) {
+    e.preventDefault()
+    tentouEnviar = true
+
     const emailOk = validarEmail()
     const senhaOk = validarSenhaFinal()
+
+    const requisitos = document.querySelector('.requisitos-senha')
+
+    if (!senhaOk) {
+        requisitos.classList.add('ativo')
+        passwordInput.focus()
+        return
+    }
 
     if (emailOk && senhaOk) {
         alert('Login realizado com sucesso! 🚀')
         form.reset()
-        document.querySelectorAll('.campo').forEach(c => c.classList.remove('success', 'error'));
-        // Reseta as bolinhas para vermelho após o sucesso
+        
+        document
+        .querySelectorAll('.campo')
+        .forEach(c => c.classList.remove('success', 'error', 'campo-shake'));
+
         reqComprimento.classList.replace('valid', 'invalid')
         reqForca.classList.replace('valid', 'invalid')
+
+        tentouEnviar = false
     }
 })

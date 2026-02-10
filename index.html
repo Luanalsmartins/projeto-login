@@ -27,8 +27,9 @@
 
                     <div class="campo campo-senha">
                         <span class="material-symbols-outlined">vpn_key</span>
-                        <input type="password" name="senha" id="isenha" placeholder="Sua senha" required>
-                        <span id="olho" class="material-symbols-outlined">visibility</span>
+                        <input type="password" name="senha" id="isenha" placeholder="Sua senha" required aria-describedby="req-comprimento req-forca">
+                        <small class="error-message"></small>
+                        <span id="olho" class="material-symbols-outlined" role="button" aria-label="Mostrar ou ocultar senha">visibility</span>
                         <div class="requisitos-senha">
                             <p>Deve conter: </p>
                             <p id="req-comprimento" class="invalid">● Pelo menos 8 caracteres</p>

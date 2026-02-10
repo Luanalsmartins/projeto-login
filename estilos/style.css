@@ -60,12 +60,16 @@ p {
     border: 2px solid var(--roxo);
     border-radius: 8px;
     margin-bottom: 30px;
+    transition: border-color .3s ease;
 }
 .campo.success {
     border-color: var(--sucesso);
 }
+.campo.error {
+    border-color: var(--erro);
+}
 .campo-senha {
-    margin-bottom: 60px;
+    margin-bottom: 90px;
     position: relative;
 }
 .campo:hover {
@@ -115,8 +119,12 @@ p {
 }
 .requisitos-senha {
     position: absolute;
-    top: 42px;
+    top: 62px;
     font-size: .8em;
+    display: none;
+}
+.requisitos-senha.ativo {
+    display: block;
 }
 .requisitos-senha p {
     line-height: 1.4;
@@ -170,7 +178,7 @@ input[type=submit]:hover {
     40%, 80% { transform: translateX(10px); }
 }
 
-.input-shake {
+.campo-shake {
     animation: shake 0.4s cubic-bezier(.36,.07,.19,.97);
     border-color: var(--erro);
 }
